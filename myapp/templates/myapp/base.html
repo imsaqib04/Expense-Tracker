@@ -1,4 +1,4 @@
-{%load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +8,15 @@
     <title>Document</title>
 </head>
 <body>
+    <nav class = "shadow-lg">
+        <div class="container flex flex-wrap justify-between items-center mx-auto">
+            <a href="#" class="flex">
+                <img class="h-10 mr-3" src="{% static 'myapp/images/wallet.png' %}" alt="">
+                <span class ="self-center text-xl font-semibold">Expanse Tracker</span>
+            </a>
+        </div>
+
+    </nav>
    {% block body %}
    {% endblock %}
 </body>
