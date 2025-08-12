@@ -1,75 +1,74 @@
 {% extends "myapp/base.html" %}
+{% load static %}
 {% block body %}
-    <h1>this is the index view/page </h1>
 
-    <form class= "shadow-lg m-10 rounded-lg"method="POST">
-        {% csrf_token %}
+<h1 class="text-2xl font-bold m-10">This is the index view/page</h1>
 
-        <div class = "form-container px-10 py-10 flex ">
-            <div class = "mx-10">
-                
-                <div class = 'mb-5'>
-                <label for="id_name">Expense Name</label>
-                </div>
-                <div class ="border">{{expense_form.name}}</div>
-
-            </div>
-
-              <div class = "mx-10">
-                
-                <div class = 'mb-5'>
-                <label for="id_name">amount</label>
-                </div>
-                <div class ="border">{{expense_form.amount}}</div>
-
-            </div>
-
-              <div class = "mx-10">
-                
-                <div class = 'mb-5'>
-                <label for="id_name">cetegory</label>
-                </div>
-                <div class ="border">{{expense_form.cetegory}}</div>
-
-            </div>
-
-            <div class = "mx-10 mt-8">
-                <button class="bg-green-500 px-5 py-2 rounded-lg text-white font-bold ">Add</button>
-
-            </div>
-            
+<!-- Add Expense Form -->
+<form class="shadow-lg m-10 rounded-lg bg-white" method="POST">
+    {% csrf_token %}
+    <div class="form-container px-10 py-10 flex flex-wrap gap-10">
+        <div>
+            <label for="id_name" class="block mb-2 font-semibold">Expense Name</label>
+            <div class="border px-2 py-1 rounded">{{ expense_form.name }}</div>
         </div>
 
-    </form>
+        <div>
+            <label for="id_amount" class="block mb-2 font-semibold">Amount</label>
+            <div class="border px-2 py-1 rounded">{{ expense_form.amount }}</div>
+        </div>
 
-    <div> Expenses </div>
-    <div class = "shadow-lg m-10 rounded-lg">
-        <div class = "expense-header flex-wrap space-x-40">
-            <span>Name</span>
-            <span>Amount</span>
-            <span>cetegory</span>
-            <span>Date</span>
-            <span>Edit</span>
-            <span>Delete</span>
+        <div>
+            <label for="id_cetegory" class="block mb-2 font-semibold">Category</label>
+            <div class="border px-2 py-1 rounded">{{ expense_form.cetegory }}</div>
         </div>
-        <hr class = "m-10">
-        {% for expense in expenses %}
-        <div class = "expense-row flex-wrap space-x-40 py-1">
-            <span class="font-bold">{{expense.name}}</span>
-            <span class="font-bold">{{expense.amount}}</span>
-            <span class="font-bold">{{expense.cetegory}}</span>
-            <span class="font-bold">{{expense.date}}</span>
-            <span class="font-bold"><a href="{% url 'edit' expense.id %}">Edit</a></span>
-            <span class="font-bold">
-                <form method="POST"action = "{% url 'delete' expense.id %}">
-                    {% csrf_token %}
-                    <button type = "submit" name="delete">Delete</button>
-                </form>
-            </span>
+
+        <div class="flex items-end">
+            <button class="bg-green-500 px-5 py-2 rounded-lg text-white font-bold hover:bg-green-600">
+                Add
+            </button>
         </div>
-        {% endfor %}
+    </div>
+</form>
+
+<!-- Expenses Table -->
+<div class="m-10 shadow-lg rounded-lg bg-white">
+    <!-- Table Header -->
+    <div class="grid grid-cols-6 gap-4 px-10 py-5 font-bold border-b bg-gray-100">
+        <span>Name</span>
+        <span>Amount</span>
+        <span>Category</span>
+        <span>Date</span>
+        <span>Edit</span>
+        <span>Delete</span>
     </div>
 
+    <!-- Table Rows -->
+    {% for expense in expenses %}
+    <div class="grid grid-cols-6 gap-4 px-10 py-5 items-center border-b">
+        <span class="font-medium">{{ expense.name }}</span>
+        <span class="font-medium">{{ expense.amount }}</span>
+        <span class="font-medium">{{ expense.cetegory }}</span>
+        <span class="font-medium">{{ expense.date }}</span>
+
+        <!-- Edit Button -->
+        <a href="{% url 'edit' expense.id %}" class="flex items-center gap-2 text-blue-600 hover:text-blue-800">
+            <img src="{% static 'myapp/images/edit.png' %}" alt="Edit" class="h-5">
+            Edit
+        </a>
+
+        <!-- Delete Button -->
+        <form method="POST" action="{% url 'delete' expense.id %}" class="flex items-center gap-2">
+            {% csrf_token %}
+            <button type="submit" name="delete" class="flex items-center gap-2 text-red-600 hover:text-red-800">
+                <img src="{% static 'myapp/images/delete.png' %}" alt="Delete" class="h-5">
+                Delete
+            </button>
+        </form>
+    </div>
+    {% empty %}
+    <div class="px-10 py-5 text-gray-500">No expenses added yet.</div>
+    {% endfor %}
+</div>
+
 {% endblock %}
-
-

@@ -4,15 +4,30 @@ from .models import Expense
 
 # Create your views here.
 
+# def index(request):
+#     if request.method=="POST":
+#         expense = ExpenseForm(request.POST)
+#         if expense.is_valid():
+#             expense.save()
+
+#     expenses = Expense.objects.all()
+#     expense_form = ExpenseForm()
+#     return render(request,'myapp/index.html',{'expense_form':expense_form,'expenses':expenses})
+
 def index(request):
-    if request.method=="POST":
+    if request.method == "POST":
         expense = ExpenseForm(request.POST)
         if expense.is_valid():
             expense.save()
+            return redirect('index')  # ← Redirect after POST (PRG pattern)
 
     expenses = Expense.objects.all()
     expense_form = ExpenseForm()
-    return render(request,'myapp/index.html',{'expense_form':expense_form,'expenses':expenses})
+    return render(request, 'myapp/index.html', {
+        'expense_form': expense_form,
+        'expenses': expenses
+    })
+
 
 def edit(request,id):
     expense = Expense.objects.get(id=id)
