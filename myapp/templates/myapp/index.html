@@ -3,12 +3,13 @@
 {% load humanize %}
 {% block body %}
 
-<div class="m-10 font-bold">Aadd Expense➕</div>
+<div class="m-10 font-bold">Add Expense ➕</div>
 
 <!-- Add Expense Form -->
 <form class="shadow-lg m-10 rounded-lg bg-white" method="POST">
     {% csrf_token %}
     <div class="form-container px-10 py-10 flex flex-wrap gap-10">
+        
         <div>
             <label for="id_name" class="block mb-2 font-semibold">Expense Name</label>
             <div class="border px-2 py-1 rounded">{{ expense_form.name }}</div>
@@ -32,8 +33,9 @@
     </div>
 </form>
 
-<div class = "m-10 font-bold">Expenses💵</div>
-<!-- Expenses Table -->
+<!-- Expenses List -->
+<div class="m-10 font-bold">Expenses 💵</div>
+
 <div class="m-10 shadow-lg rounded-lg bg-white">
     <!-- Table Header -->
     <div class="grid grid-cols-6 gap-4 px-10 py-5 font-bold border-b bg-gray-100">
@@ -47,111 +49,93 @@
 
     <!-- Table Rows -->
     {% for expense in expenses %}
-    <div class="grid grid-cols-6 gap-4 px-10 py-5 items-center border-b">
-        <span class="font-medium">{{ expense.name }}</span>
-        <span class="font-medium">₹{{ expense.amount |intcomma }}</span>
-        <span class="font-medium">{{ expense.cetegory }}</span>
-        <span class="font-medium">{{ expense.date }}</span>
+        <div class="grid grid-cols-6 gap-4 px-10 py-5 items-center border-b">
+            <span class="font-medium">{{ expense.name }}</span>
+            <span class="font-medium">₹{{ expense.amount|intcomma }}</span>
+            <span class="font-medium">{{ expense.cetegory }}</span>
+            <span class="font-medium">{{ expense.date }}</span>
 
-        <!-- Edit Button -->
-        <a href="{% url 'edit' expense.id %}" class="flex items-center gap-2 text-blue-600 hover:text-blue-800">
-            <img src="{% static 'myapp/images/edit.png' %}" alt="Edit" class="h-5">
-            Edit
-        </a>
+            <!-- Edit -->
+            <a href="{% url 'edit' expense.id %}" class="flex items-center gap-2 text-blue-600 hover:text-blue-800">
+                <img src="{% static 'myapp/images/edit.png' %}" alt="Edit" class="h-5"> Edit
+            </a>
 
-        <!-- Delete Button -->
-        <form method="POST" action="{% url 'delete' expense.id %}" class="flex items-center gap-2">
-            {% csrf_token %}
-            <button type="submit" name="delete" class="flex items-center gap-2 text-red-600 hover:text-red-800">
-                <img src="{% static 'myapp/images/delete.png' %}" alt="Delete" class="h-5">
-                Delete
-            </button>
-        </form>
-    </div>
+            <!-- Delete -->
+            <form method="POST" action="{% url 'delete' expense.id %}" class="flex items-center gap-2">
+                {% csrf_token %}
+                <button type="submit" name="delete" class="flex items-center gap-2 text-red-600 hover:text-red-800">
+                    <img src="{% static 'myapp/images/delete.png' %}" alt="Delete" class="h-5"> Delete
+                </button>
+            </form>
+        </div>
     {% empty %}
-    <div class="px-10 py-5 text-gray-500">No expenses added yet.</div>
+        <div class="px-10 py-5 text-gray-500">No expenses added yet.</div>
     {% endfor %}
 
-    <!--Displaying total-->
+    <!-- Total -->
     <div class="px-72 py-5">
-    <span class = "font-bold text-green-500">
-        Total : ₹{{ total_expenses.amount__sum}}
+        <span class="font-bold text-green-500">
+            Total : ₹{{ total_expenses.amount__sum }}
         </span>
-    <!--Displaying total-->
     </div>
 </div>
 
-
-<div class = "flex">
+<!-- Summary Cards -->
+<div class="flex">
     <div class="w-1/3 shadow-lg ml-10 rounded-lg">
         <h1 class="ml-10 font-bold text-gray-500">last 365 days</h1>
         <h1 class="ml-10 my-5 text-2xl text-green-500 font-bold">
-            ₹{{yearly_sum.amount__sum | intcomma}}
+            ₹{{ yearly_sum.amount__sum|intcomma }}
         </h1>
-
     </div>
 
     <div class="w-1/3 shadow-lg ml-10 rounded-lg">
         <h1 class="ml-10 font-bold text-gray-500">last 30 days</h1>
         <h1 class="ml-10 my-5 text-2xl text-green-500 font-bold">
-            ₹{{monthly_sum.amount__sum | intcomma}}
+            ₹{{ monthly_sum.amount__sum|intcomma }}
         </h1>
-
     </div>
 
     <div class="w-1/3 shadow-lg ml-10 rounded-lg">
         <h1 class="ml-10 font-bold text-gray-500">last 07 days</h1>
         <h1 class="ml-10 my-5 text-2xl text-green-500 font-bold">
-            ₹{{weekly_sum.amount__sum | intcomma}}
+            ₹{{ weekly_sum.amount__sum|intcomma }}
         </h1>
-
     </div>
-
 </div>
 
+<!-- Past 30 days -->
 <div class="flex">
     <div class="w-1/2 shadow-lg m-10">
         <div class="flex flex-wrap space-x-40 font-bold px-20 py-5">
             <span>past 30 days sum expenses</span>
         </div>
         <hr>
-    </div id = "30-day-table">
         {% for daily_sum in daily_sums %}
-            <div class = "flex flex-wrap px-20 py-5">
-                <span>
-                     {{daily_sum.date}}
-                </span>
+            <div class="flex flex-wrap px-20 py-5">
+                <span>{{ daily_sum.date }}</span>
             </div>
             <div class="flex flex-wrap px-20 py-5">
-                <span class="text-green-500">
-                    ₹ {{daily_sum.sum|intcomma}}
-                </span>
+                <span class="text-green-500">₹ {{ daily_sum.sum|intcomma }}</span>
             </div>
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
 
+    <!-- Categorical Expenses -->
     <div class="w-1/2 shadow-lg m-10">
         <div class="flex flex-wrap space-x-40 font-bold px-20 py-5">
             <span>categorical expenses</span>
         </div>
         <hr>
-    </div id = "30-day-table">
         {% for cetegorical_sum in cetegorical_sums %}
-            <div class = "flex flex-wrap px-20 py-5">
-                <span>
-                     {{cetegorical_sum.cetegory}}
-                </span>
+            <div class="flex flex-wrap px-20 py-5">
+                <span>{{ cetegorical_sum.cetegory }}</span>
             </div>
             <div class="flex flex-wrap px-20 py-5">
-                <span class="text-green-500">
-                    ₹ {{cetegorical_sum.sum|intcomma}}
-                </span>
+                <span class="text-green-500">₹ {{ cetegorical_sum.sum|intcomma }}</span>
             </div>
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
-
 </div>
 
 {% endblock %}
