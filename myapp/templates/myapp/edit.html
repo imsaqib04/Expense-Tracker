@@ -1,0 +1,21 @@
+{% extends "myapp/base.html" %}
+{% block body  %}
+
+<form method="POST">
+    {% csrf_token %}
+    <divc class="px-10 py-10">
+
+        <div class ="mx-10">
+            <div class = "mb-5">
+                <label class="font-semibold"></label>
+            </div>
+            <div>
+                {{expense_form}}
+            </div>
+        </div>
+
+    </div>
+    <button type = "submit">Edit Data</button>
+</form>
+
+{% endblock  %}

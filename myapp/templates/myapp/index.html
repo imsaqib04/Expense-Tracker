@@ -42,6 +42,31 @@
 
     </form>
 
+    <div> Expenses </div>
+    <div class = "shadow-lg m-10 rounded-lg">
+        <div class = "expense-header flex-wrap space-x-40">
+            <span>Name</span>
+            <span>Amount</span>
+            <span>cetegory</span>
+            <span>Date</span>
+            <span>Edit</span>
+            <span>Delete</span>
+        </div>
+        <hr class = "m-10">
+        {% for expense in expenses %}
+        <div class = "expense-row flex-wrap space-x-40 py-1">
+            <span class="font-bold">{{expense.name}}</span>
+            <span class="font-bold">{{expense.amount}}</span>
+            <span class="font-bold">{{expense.cetegory}}</span>
+            <span class="font-bold">{{expense.date}}</span>
+            <span class="font-bold"><a href="{% url 'edit' expense.id %}">Edit</a></span>
+            <span class="font-bold"><a href="">Delete</a></span>
+
+
+        </div>
+        {% endfor %}
+    </div>
+
 {% endblock %}
 
 
