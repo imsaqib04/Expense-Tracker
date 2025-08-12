@@ -1,21 +1,39 @@
 {% extends "myapp/base.html" %}
-{% block body  %}
-
-<form method="POST">
+{% block body %}
+<form method="POST" class="px-10 py-10">
     {% csrf_token %}
-    <divc class="px-10 py-10">
 
-        <div class ="mx-10">
-            <div class = "mb-5">
-                <label class="font-semibold"></label>
-            </div>
-            <div>
-                {{expense_form}}
+    <div class="flex items-end space-x-6">
+        <!-- Expense Name -->
+        <div>
+            <label for="id_name" class="font-semibold block mb-1">Expense Name</label>
+            <div class="border p-1">
+                {{ expense_form.name }}
             </div>
         </div>
 
-    </div>
-    <button type = "submit">Edit Data</button>
-</form>
+        <!-- Expense Amount -->
+        <div>
+            <label for="id_amount" class="font-semibold block mb-1">Expense Amount</label>
+            <div class="border p-1">
+                {{ expense_form.amount }}
+            </div>
+        </div>
 
-{% endblock  %}
+        <!-- Expense Category -->
+        <div>
+            <label for="id_category" class="font-semibold block mb-1">Expense Category</label>
+            <div class="border p-1">
+                {{ expense_form.cetegory }}
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+            <button class="bg-green-500 px-5 py-2 text-white font-bold rounded" type="submit">
+                Edit Data
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock %}
